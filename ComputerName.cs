@@ -3,6 +3,7 @@ using System.Net;
 using System.Linq;
 
 namespace ComputerName
+
 {
     public partial class MainWindow : Window
     {
@@ -13,23 +14,35 @@ namespace ComputerName
         {
             InitializeComponent();
         }
+
         private void StatusIndicator_Initialized(object sender, System.EventArgs e)
         {
+
+            StatusIndicator.Fill = System.Windows.Media.Brushes.Red;
+            connectionStatus = "Connection Not Successful";
+
             try
             {
                 using (var client = new WebClient())
-                using (var stream = client.OpenRead("https://www.google.com")) /// Enter the URL you wish to check for connectivity. In this instance Google is used as an example
+                using (var stream = client.OpenRead("https://www.google.co.uk"))
                 {
-                    StatusIndicator.Fill = System.Windows.Media.Brushes.Green;
-                    connectionStatus = "Connection Successful";
+                    StatusIndicator.Fill = System.Windows.Media.Brushes.Orange;
+                    connectionStatus = "Internet Connection Successful";
                 }
             }
-            catch
+            catch { }
+
+            try
             {
-                StatusIndicator.Fill = System.Windows.Media.Brushes.Red;
-                connectionStatus = "Connection Not Successful";
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://internalTestResource.company.com"))
+                {
+                    StatusIndicator.Fill = System.Windows.Media.Brushes.Green;
+                    connectionStatus = "Internal Connection Successful";
+                }
             }
-        }
+            catch { }
+            }
 
         private void MachineName_Initialized(object sender, System.EventArgs e)
         {
@@ -50,6 +63,7 @@ namespace ComputerName
                 IPs.Items.Add(address);
             }
         }
+
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             string copiedDetails = MachineName.Text + "\r\n" + Domain.Text + "\r\n" + connectionStatus + "\r\n";
