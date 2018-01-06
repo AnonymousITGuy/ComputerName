@@ -1,15 +1,12 @@
-using System.Windows;
 using System.Net;
 using System.Linq;
 
 namespace ComputerName
-
 {
     public partial class MainWindow : Window
     {
         IPAddress[] addresses;
         string connectionStatus;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -17,7 +14,6 @@ namespace ComputerName
 
         private void StatusIndicator_Initialized(object sender, System.EventArgs e)
         {
-
             StatusIndicator.Fill = System.Windows.Media.Brushes.Red;
             connectionStatus = "Connection Not Successful";
 
@@ -35,7 +31,7 @@ namespace ComputerName
             try
             {
                 using (var client = new WebClient())
-                using (var stream = client.OpenRead("http://internalTestResource.company.com"))
+                using (var stream = client.OpenRead("http://internalResource.mydomain.com"))
                 {
                     StatusIndicator.Fill = System.Windows.Media.Brushes.Green;
                     connectionStatus = "Internal Connection Successful";
@@ -66,11 +62,11 @@ namespace ComputerName
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            string copiedDetails = MachineName.Text + "\r\n" + Domain.Text + "\r\n" + connectionStatus + "\r\n";
+            string copiedDetails = "Hostname: " + MachineName.Text + "\r\n" + "Domain Name: "+ Domain.Text + "\r\n" + "Connection Status: " + connectionStatus + "\r\n";
 
             foreach (var ipAddress in addresses)
             {
-                copiedDetails += ipAddress.ToString() + "\r\n";
+                copiedDetails += "IP Address: " + ipAddress.ToString() + "\r\n";
             }
 
             Clipboard.SetText(copiedDetails);
